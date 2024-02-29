@@ -1,4 +1,4 @@
-# LLM_Sandbox
+# LLM Sandbox
 ## 1. Description
 This is a place to play with Large Language Models (LLMs) for educational purposes only.  
 The demo limited output tokens and is not appropriate for a real-world use.
