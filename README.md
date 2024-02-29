@@ -7,8 +7,8 @@ The demo limited output tokens and is not appropriate for a real-world use.
 - Compare GPT-3.5 Turbo to Llama 2 7B Chat, Llama 2 70B Chat, and CodeLlama 34B Instruct models 
 
 ## 2. Demo App
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://asop-dream.streamlit.app/)  
-Please visit the Streamlit web app (https://asop-dream.streamlit.app/) and play with the model yourself!
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://llm-sandbox.streamlit.app/)  
+Please visit the Streamlit web app (https://llm-sandbox.streamlit.app/) and play with the model yourself!
 
 ## 3. Author
 Dan Kim 
