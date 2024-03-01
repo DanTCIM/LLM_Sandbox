@@ -8,7 +8,9 @@ token_limits = 150
 st.set_page_config(page_title="Model Parameters and Prompting")
 
 st.markdown("# Model Parameters and Prompting")
-st.write("The demo is based on GPT-3.5-Turbo, OpenAI's fine-tuned model.")
+st.write(
+    "The demo is based on GPT-3.5-Turbo, OpenAI's fine-tuned model. The base setup uses temperature of 0.75 and a system instruction *you are a helpful assistant*."
+)
 st.write(f"The demo limits maximum of {token_limits} tokens for illustration purposes.")
 st.divider()
 st.sidebar.header("Customize model")
@@ -27,7 +29,7 @@ user_temperature = st.sidebar.slider("Temperature", 0.0, 2.0, 1.0, 0.25)
 
 
 # Define a function to get completion based on user input
-def get_completion(user_input, system_message=default_system_message, temperature=1.0):
+def get_completion(user_input, system_message=default_system_message, temperature=0.75):
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo-0125",
         # the flagship model of this family, supports a 16K context window and is optimized for dialog.
