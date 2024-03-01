@@ -2,6 +2,8 @@ import streamlit as st
 import os
 import openai
 from openai import OpenAI
+from mistralai.client import MistralClient
+from mistralai.models.chat_completion import ChatMessage
 
 token_limits = 150
 
@@ -9,7 +11,13 @@ st.set_page_config(page_title="Model Types")
 
 st.markdown("# Model Types")
 st.write(
-    "The demo compares OpenAI's closed model GPT-3.5-Turbo and Meta's fine-tuned open-source models. CodeLlama-34b-Instruct is an open-source model that is optimized for coding."
+    "The demo compares OpenAI's closed model GPT-3.5-Turbo and other open-source models."
+)
+st.write(
+    """
+Llama-2 chat (7B and 70B) and Code Llama are fine tuned from Meta's Llama 2 base model. Code Llama is optimized for coding.  
+Mixtral-8x7b is an open-source mixture-of-experts (MOE) model by Mistral.
+"""
 )
 
 MODEL_NAME = st.selectbox(
@@ -18,6 +26,7 @@ MODEL_NAME = st.selectbox(
         "Llama-2-7b-chat",
         "Llama-2-70b-chat",
         "CodeLlama-34b-Instruct",
+        "Mixtral-8x7b",
     ],
 )
 
@@ -32,6 +41,7 @@ client2 = OpenAI(
     api_key=st.secrets["DEEPINFRA_API_KEY"],
     base_url="https://api.deepinfra.com/v1/openai",
 )
+client3 = MistralClient(api_key=st.secrets["MISTRAL_API_KEY"])
 
 MODEL_ID1 = "gpt-3.5-turbo-0125"
 
@@ -40,6 +50,7 @@ model_name_to_id = {
     "Llama-2-70b-chat": "meta-llama/Llama-2-70b-chat-hf",
     "Llama-2-7b-chat": "meta-llama/Llama-2-7b-chat-hf",
     "CodeLlama-34b-Instruct": "codellama/CodeLlama-34b-Instruct-hf",
+    "Mixtral-8x7b": "open-mixtral-8x7b",
 }
 # Use the MODEL_NAME to get the corresponding MODEL_ID from the dictionary
 MODEL_ID2 = model_name_to_id[MODEL_NAME]
@@ -47,15 +58,27 @@ MODEL_ID2 = model_name_to_id[MODEL_NAME]
 
 # Define a function to get completion based on user input
 def get_completion(client, model_name, user_input):
-    completion = client.chat.completions.create(
-        model=model_name,
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": user_input},
-        ],
-        max_tokens=token_limits,
-    )
-    return completion.choices[0].message.content
+    if model_name == "open-mixtral-8x7b":
+        chat_response = client3.chat(
+            model="mistral-large-latest",
+            messages=[
+                ChatMessage(role="system", content="You are a helpful assistant."),
+                ChatMessage(role="user", content=user_input),
+            ],
+            max_tokens=token_limits,
+        )
+        return chat_response.choices[0].message.content
+
+    else:
+        completion = client.chat.completions.create(
+            model=model_name,
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": user_input},
+            ],
+            max_tokens=token_limits,
+        )
+        return completion.choices[0].message.content
 
 
 # Define a function to display responses for a given prompt
