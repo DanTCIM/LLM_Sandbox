@@ -4,7 +4,7 @@ This is a place to play with Large Language Models (LLMs) for educational purpos
 The demo limited output tokens and is not appropriate for a real-world use.
 - Compare base model (Babbage-002) and fine-tuned model (GPT-3.5 Turbo)
 - Change LLM parameters and system prompts to see how LLMs generation can be useful
-- Compare GPT-3.5 Turbo to Llama 2 7B Chat, Llama 2 70B Chat, and CodeLlama 34B Instruct models 
+- Compare GPT-3.5 Turbo to open-source models (Llama-2 Chat 7B, 70B, Code Llama, Mixtral 8X7B)
 
 ## 2. Demo App
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://llm-sandbox.streamlit.app/)  
