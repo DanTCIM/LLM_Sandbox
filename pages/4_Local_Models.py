@@ -2,9 +2,10 @@ import streamlit as st
 import os
 import openai
 from openai import OpenAI
-import ollama
 
-token_limits = 300
+# import ollama
+
+token_limits = 200
 
 st.set_page_config(page_title="Model Types")
 
@@ -36,8 +37,11 @@ st.sidebar.header("Customize model")
 
 ## API key setup
 os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
-client = OpenAI()
-
+client1 = OpenAI()
+client2 = OpenAI(
+    base_url="http://localhost:11434/v1",
+    api_key="ollama",  # required, but unused
+)
 MODEL_ID1 = "gpt-3.5-turbo-0125"
 
 # Define a dictionary to map the MODEL_NAME to MODEL_ID
@@ -52,30 +56,16 @@ MODEL_ID2 = model_name_to_id[MODEL_NAME]
 
 
 # Define a function to get completion based on user input
-def get_completion(model_name, user_input):
-    if model_name == MODEL_ID1:
-        completion = client.chat.completions.create(
-            model=model_name,
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": user_input},
-            ],
-            max_tokens=token_limits,
-        )
-        return completion.choices[0].message.content
-    else:
-        response = ollama.chat(
-            model=model_name,
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {
-                    "role": "user",
-                    "content": user_input,
-                },
-            ],
-            # max_tokens=token_limits,
-        )
-        return response["message"]["content"]
+def get_completion(client, model_name, user_input):
+    completion = client.chat.completions.create(
+        model=model_name,
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": user_input},
+        ],
+        max_tokens=token_limits,
+    )
+    return completion.choices[0].message.content
 
 
 # Define a function to display responses for a given prompt
@@ -86,11 +76,11 @@ def display_responses(user_prompt):
         with col1:
             container = st.container(border=True)
             container.write("**OpenAI GPT-3.5-Turbo**")
-            container.write(get_completion(MODEL_ID1, user_prompt))
+            container.write(get_completion(client1, MODEL_ID1, user_prompt))
         with col2:
             container = st.container(border=True)
             container.write(f"**{MODEL_NAME}**")
-            container.write(get_completion(MODEL_ID2, user_prompt))
+            container.write(get_completion(client2, MODEL_ID2, user_prompt))
 
 
 # Use a single block for handling different user prompts
