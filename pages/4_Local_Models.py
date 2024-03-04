@@ -11,7 +11,7 @@ st.set_page_config(page_title="Model Types")
 
 st.markdown("# Local Models: NOT INTENDED TO WORK ON WEB")
 st.write(
-    "The demo compares OpenAI's closed model GPT-3.5-Turbo and other open-source local models that do not need a web connection."
+    "The demo compares OpenAI's closed model GPT-3.5-Turbo and other local open-source models that do not need a web connection."
 )
 st.write(
     """
@@ -23,7 +23,7 @@ st.write(
 )
 
 MODEL_NAME = st.selectbox(
-    "Select local open-source model",
+    "Select a local model",
     [
         "Gemma 7b",
         "Mistral 7b",
