@@ -32,7 +32,7 @@ MODEL_NAME = st.selectbox(
 
 st.write(f"The demo limits maximum of {token_limits} tokens for illustration purposes.")
 st.divider()
-st.sidebar.header("Customize model")
+st.sidebar.header("Ask questions")
 
 ## API key setup
 os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
